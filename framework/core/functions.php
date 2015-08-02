@@ -455,31 +455,75 @@ function areaCadastro($logado){
 
 		return $event_data;
 	}
-function printaTabela(){
+function printaTabela($dados){
 
 		$horarios = array('7:00h às 8:00h','8:00h às 9:00h','9:00h às 10:00h',
 			'10:00h às 11:00h','11:00h às 12:00h','12:00h às 14:00h','14:00h às 15:00h',		
 			'15:00h às 16:00h','16:00h às 17:00h','17:00h às 18:00h','18:00h às 19:00h',
 			'19:00h às 20:00h','20:00h às 21:00h');
 
+		$materias = $dados;
 		echo '<table class="table table-striped text-center"><tr><th>Horário</th>
 		<th>Segunda-Feira</th><th>Terça-Feira</th><th>Quarta-Feira</th>
 		<th>Quinta-Feira</th><th>Sexta-Feira</th><th>Sábado</th></tr>';
 
+http://php.net/manual/pt_BR/function.print-r.php
 		for($i=0;$i<13;$i++)
 		{
-				echo "<tr >";
-				echo "<td>".$horarios[$i]."</td>";
-				//cada td é uma materia do horario
-				echo "<td>"."0"."</td>";
-				echo "<td>"."1"."</td>";
-				echo "<td>"."2"."</td>";
-				echo "<td>"."3"."</td>";
-				echo "<td>"."4"."</td>";
-				echo "<td>"."5"."</td>";
+				echo "<tr>";
+				echo "<td class='horarios'>".$horarios[$i]."</td>";
+
+				for($j=0;$j<6;$j++)
+				{
+					//cada td é uma materia do horario
+					echo "<td class='aulas'>".converteMateria($materias[$j][$i])."</td>";
+				}
 				echo "</tr>";
 		}
 
 	}
 
+	function converteMateria($numero){
+		switch($numero){
+			case -2:
+				return "Almoço";
+			case-1:
+				return "Sem aula";
+			case 0:
+				return "Legislação";
+			case 1:
+				return "Direção Defensiva";
+			case 2:
+				return "Primeiros Socorros";
+			case 3:
+				return "Meio Ambiente";
+			case 4:
+				return "Mecanica";
+
+		}
+	}
+
+	function resolveHorario(){
+
+		$mysqli = connect_db();
+
+		$result = mysqli_query($mysqli,"SELECT horarios FROM px_schedules WHERE ID = '1'");
+
+		$horario = mysqli_fetch_array($result);
+
+		list($segunda,$terca,$quarta,$quinta,$sexta,$sabado) = split('\|',$horario[0]);
+
+		$temp1 = split(',',$segunda);
+		$temp2 = split(',',$terca);
+		$temp3 = split(',',$quarta);
+		$temp4 = split(',',$quinta);
+		$temp5 = split(',',$sexta);
+		$temp6 = split(',',$sabado);
+
+		$diasSemana=array();
+
+		array_push($diasSemana,$temp1,$temp2,$temp3,$temp4,$temp5,$temp6);
+
+		return $diasSemana;
+	}
 ?>
