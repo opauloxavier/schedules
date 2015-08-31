@@ -467,7 +467,6 @@ function printaTabela($dados){
 		<th>Segunda-Feira</th><th>Terça-Feira</th><th>Quarta-Feira</th>
 		<th>Quinta-Feira</th><th>Sexta-Feira</th><th>Sábado</th></tr>';
 
-http://php.net/manual/pt_BR/function.print-r.php
 		for($i=0;$i<13;$i++)
 		{
 				echo "<tr>";
@@ -486,28 +485,35 @@ http://php.net/manual/pt_BR/function.print-r.php
 	function converteMateria($numero){
 		switch($numero){
 			case -2:
-				return "Almoço";
+				return "<span class='almoco'>Almoço</span>";
 			case-1:
-				return "Sem aula";
+				return "<span class='semAula'>Sem aula</span>";
 			case 0:
-				return "Legislação";
+				return "<span class='naoDefinido'>Não Definido</span>";
 			case 1:
-				return "Direção Defensiva";
+				return "<span class='legislacao'>Legislação</span>";
 			case 2:
-				return "Primeiros Socorros";
+				return "<span class='direcaoDefensiva'>Direçao Defensiva</span>";
 			case 3:
-				return "Meio Ambiente";
+				return "<span class='primeirosSocorros'>Primeiros Socorros</span>";
 			case 4:
-				return "Mecanica";
-
+				return "<span class='meioAmbiente'>Meio Ambiente</span>";
+			case 5:
+				return "<span class='mecanica'>Mecânica</span>";
 		}
 	}
 
-	function resolveHorario(){
+	function resolveHorario($numberWeek=false){
 
 		$mysqli = connect_db();
 
-		$result = mysqli_query($mysqli,"SELECT horarios FROM px_schedules WHERE ID = '1'");
+		if($numberWeek!=false)
+			$result = mysqli_query($mysqli,"SELECT horarios FROM px_schedules WHERE wk_number ='".$numberWeek."'");
+
+		else{
+			$numberWeek=date('W'); //Current week
+			$result = mysqli_query($mysqli,"SELECT horarios FROM px_schedules WHERE wk_number ='".$numberWeek."'");
+		}
 
 		$horario = mysqli_fetch_array($result);
 

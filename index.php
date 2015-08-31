@@ -19,31 +19,37 @@
 	
 	require_once 'vendor/autoload.php';
 
-	include_once THEME_URL."header.php";
+	if($_GET['to']!='data' and $_GET['to']!='tabela'){
+		include_once THEME_URL."header.php";
 
-	//include_once PAGES_URL."featured.php";
+		if(isset($_GET['to'])){
+			if($_GET['to']=='home'){
+				include_once PAGES_URL."home.php";
+			}
 
-	//include_once PAGES_URL."status.php";
+			elseif($_GET['to']=='logout'){
+				include_once PAGES_URL."logout.php";
+			}
 
-	if(isset($_GET['to'])){
-		if($_GET['to']=='home'){
+			elseif($_GET['to']=='error'){
+				include_once PAGES_URL."home.php";
+			}
+			
+
+		}
+		
+		else{
 			include_once PAGES_URL."home.php";
 		}
-
-		elseif($_GET['to']=='logout'){
-			include_once PAGES_URL."logout.php";
-		}
-
-		elseif($_GET['to']=='error'){
-			include_once PAGES_URL."home.php";
-		}
-
-	}
-	
-	else{
-		include_once PAGES_URL."home.php";
 	}
 
+	else if($_GET['to']=='tabela'){
+				include_once PAGES_URL."tabela.php";
+	}
+
+	else if($_GET['to']=='data'){
+				include_once PAGES_URL."data.php";
+	}
 
 	//include_once THEME_URL."footer.php";
 

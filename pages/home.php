@@ -1,11 +1,19 @@
 <div class="page-header text-center" style="margin-top:80px;">
 	  		<h1>Tabela de Horários </h1>
-	  		<h5>Correspondente a <strong>03/08/2015</strong> a <strong>10/08/2015</strong></h5>
+	  		<h5>
+		  		<button type="button" class="btn btn-default btn-xs anterior" aria-label="Left Align">
+	 				 <span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span>
+				</button>
+			<span class='periodo'></span>
+			<button type="button" class="btn btn-default btn-xs proximo" aria-label="Left Align">
+	 				 <span class="glyphicon glyphicon-arrow-right" aria-hidden="true"></span>
+				</button>		
+	  		</h5>
 </div>
 
 <div class="row">
-	<div class="col-md-12">
-		<?php printaTabela(resolveHorario()); ?>
+	<div class="col-md-12 tabela-horario">
+	<?php printaTabela(resolveHorario());?>
 	</div>
 </div>
 
@@ -35,23 +43,35 @@
 			    </label>
 				</div>
 			<div class="radio">
-			    <label for="radios-1">
+			    <label for="radios-2">
 			      <input name="radios" id="radios-2" value="Primeiros Socorros" type="radio">
 			      Noções de Primeiros Socorros
 			    </label>
 				</div>
 			<div class="radio">
-			    <label for="radios-1">
+			    <label for="radios-3">
 			      <input name="radios" id="radios-3" value="Meio Ambiente" type="radio">
 			      Cidadania e Meio Ambiente
 			    </label>
 				</div>
 			<div class="radio">
-			    <label for="radios-1">
+			    <label for="radios-4">
 			      <input name="radios" id="radios-4" value="Mecânica Basica" type="radio">
 			      Mecânica Basica e Manutenção de Veículos
 			    </label>
 				</div>
+			<div class="radio">
+			    <label for="radios-5">
+			      <input name="radios" id="radios-5" value="Sem Aula" type="radio">
+			      Sem Aula
+			    </label>
+				</div>
+			<div class="radio">
+			    <label for="radios-6">
+			      <input name="radios" id="radios-6" value="Almoço" type="radio">
+			      Almoço
+			    </label>
+				</div>	
 			  </div>
 			</div>
 		</fieldset>
