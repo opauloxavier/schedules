@@ -34,7 +34,10 @@
 			elseif($_GET['to']=='error'){
 				include_once PAGES_URL."home.php";
 			}
-			
+
+			elseif($_GET['to']=='editar'){
+				include_once PAGES_URL."editar.php";
+			}
 
 		}
 		
@@ -51,6 +54,6 @@
 				include_once PAGES_URL."data.php";
 	}
 
-	//include_once THEME_URL."footer.php";
+	
 
 ?>

@@ -1,0 +1,14 @@
+RewriteEngine On # Turn on the rewriting engine 
+Options -Indexes
+#ErrorDocument 404 "pages/404.php"
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+
+Options All -Indexes
+
+RewriteBase /schedules/
+RewriteRule  ^([0-9a-zA-Z-_]{1,100})/?$ index.php?to=$1 [L]
+RewriteRule  ^tabela/([0-9a-zA-Z-_]{1,100})/([0-9a-zA-Z-_]{1,100})/?$ index.php?to=tabela&year=$1&wk_number=$2 [L]
+RewriteRule  ^data/([0-9a-zA-Z-_]{1,100})/([0-9a-zA-Z-_]{1,100})/?$ index.php?to=data&year=$1&wk_number=$2 [L]
+RewriteRule  ^editar/([0-9a-zA-Z-_]{1,100})/([0-9a-zA-Z-_]{1,100})/?$ index.php?to=editar&year=$1&wk_number=$2 [L]
+RewriteRule  ^finalizaEdicao/([0-9a-zA-Z-_]{1,100})/([0-9a-zA-Z-_]{1,100})/?$ index.php?to=finalizaEdicao&year=$1&wk_number=$2 [L]

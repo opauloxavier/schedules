@@ -358,28 +358,6 @@ function areaCadastro($logado){
 			return md5(uniqid(rand(), true));
 	}
 
-	function validaCertificado($uuid_evento,$uuid_participante){
-
-		$mysqli = connect_db();
-
-		$result = mysqli_query($mysqli,"SELECT * FROM px_eventos WHERE uuid = '$uuid_evento'");
-		$event_data = mysqli_fetch_array($result);
-		$id_evento = $event_data['ID'];
-
-		$result2 = mysqli_query($mysqli,"SELECT * FROM px_participantes WHERE uuid_cert = '$uuid_participante' and ID_evento = '$id_evento'");
-		$participante_data = mysqli_fetch_array($result2);
-
-		$result3= mysqli_query($mysqli,"SELECT * FROM px_templates WHERE ID_evento='$id_evento'");
-		$content_data = mysqli_fetch_array($result3);
-
-		if(mysqli_num_rows($result)>0 and mysqli_num_rows($result2)>0)
-			geraPdf($content_data['content'],'Marcos A. Caldas',$event_data['nome_evento'],$event_data['nome_evento'],'Evento,Certificado,Direitos Humanos,Debate',$event_data['nome_evento'],$participante_data['nome_participante'],$event_data['local_evento'],'29/09/2014',$participante_data['uuid_cert']);
-
-		else
-			echo "Erro 404";
-
-	}
-
 	//function mysqli_fetch_all($result){
       //    while($row = $result->fetch_array())
 		//	{
@@ -388,45 +366,6 @@ function areaCadastro($logado){
 
 		//	return $rows;
     //}
-
-	function insereEvento($id_owner,$nome_evento,$data_evento,$duracao_evento,$local_evento){
-		$mysqli = connect_db();
-
-		$id_owner = $_SESSION['ID'];
-		$uuid_evento = uuidGen();
-
-		if(!check_double_evento($nome_evento)){
-
-			$result = mysqli_query($mysqli,"INSERT INTO px_eventos (`ID_owner`, `nome_evento`, `data_evento`, `tempo_evento`, `local_evento`, `uuid`) VALUES ('$id_owner', '$nome_evento', '$data_evento', '$duracao_evento', '$local_evento', '$uuid_evento')");
-
-			$result2 = mysqli_query($mysqli,"SELECT * FROM px_eventos WHERE nome_evento = '$nome_evento'");
-			$data = mysqli_fetch_array($result2);
-
-			return $data['ID'];
-		}
-
-		else
-			return false;
-
-	}
-
-
-	function insereParticipante($id_owner,$id_evento,$nome_participante,$email_participante){
-		$mysqli = connect_db();
-		$uuid_participante = uuidGen();
-
-		if(!check_double_participante($nome_participante,$id_evento)){
-			$result = mysqli_query($mysqli,"INSERT INTO px_participantes (`ID_owner`, `ID_evento`, `nome_participante`, `email_participante`, `uuid_cert`) VALUES ('$id_owner', '$id_evento', '$nome_participante', '$email_participante', '$uuid_participante')");
-
-		if($result)
-			return true;
-		else
-			return false;
-		}
-
-		else 
-			echo "Erro: Usuário já cadastrado no evento";
-	}
 
 	function sanitizeDate($data){
 		$dia = ($data[0].$data[1]);
@@ -482,36 +421,59 @@ function printaTabela($dados){
 
 	}
 
-	function converteMateria($numero){
-		switch($numero){
-			case -2:
-				return "<span class='almoco'>Almoço</span>";
-			case-1:
-				return "<span class='semAula'>Sem aula</span>";
-			case 0:
-				return "<span class='naoDefinido'>Não Definido</span>";
-			case 1:
-				return "<span class='legislacao'>Legislação</span>";
-			case 2:
-				return "<span class='direcaoDefensiva'>Direçao Defensiva</span>";
-			case 3:
-				return "<span class='primeirosSocorros'>Primeiros Socorros</span>";
-			case 4:
-				return "<span class='meioAmbiente'>Meio Ambiente</span>";
-			case 5:
-				return "<span class='mecanica'>Mecânica</span>";
-		}
+	function converteMateria($numero,$tabelaView=true){
+
+		if($tabelaView)
+			switch($numero){
+				case -2:
+					return "<span class='almoco'>Almoço</span>";
+				case-1:
+					return "<span class='semAula'>Sem aula</span>";
+				case 0:
+					return "<span class='naoDefinido'>Não Definido</span>";
+				case 1:
+					return "<span class='legislacao'>Legislação</span>";
+				case 2:
+					return "<span class='direcaoDefensiva'>Direçao Defensiva</span>";
+				case 3:
+					return "<span class='primeirosSocorros'>Primeiros Socorros</span>";
+				case 4:
+					return "<span class='meioAmbiente'>Meio Ambiente</span>";
+				case 5:
+					return "<span class='mecanica'>Mecânica</span>";
+			}
+
+		else
+			switch($numero){
+				case -2:
+					return "Almoço";
+				case-1:
+					return "Sem aula";
+				case 0:
+					return "Não Definido";
+				case 1:
+					return "Legislação";
+				case 2:
+					return "Direçao Defensiva";
+				case 3:
+					return "Primeiros Socorros";
+				case 4:
+					return "Meio Ambiente";
+				case 5:
+					return "Mecânica";
+			}
 	}
 
-	function resolveHorario($numberWeek=false){
+	function resolveHorario($numberWeek=false,$year=false){
 
 		$mysqli = connect_db();
 
-		if($numberWeek!=false)
-			$result = mysqli_query($mysqli,"SELECT horarios FROM px_schedules WHERE wk_number ='".$numberWeek."'");
+		if($numberWeek!=false and $year!=false){
+			$result = mysqli_query($mysqli,"SELECT horarios FROM px_schedules WHERE wk_number ='".$numberWeek."' AND  year ='".$year."' ");
+		}
 
 		else{
-			$numberWeek=date('W'); //Current week
+			$numberWeek=date('W'); //Semana Atual
 			$result = mysqli_query($mysqli,"SELECT horarios FROM px_schedules WHERE wk_number ='".$numberWeek."'");
 		}
 
@@ -532,4 +494,86 @@ function printaTabela($dados){
 
 		return $diasSemana;
 	}
+
+	function habilitarEdicao(){
+		$editar=BASE_URL."editar";
+		$home=BASE_URL."home";
+
+		if(($_GET['to']=='editar') and $_SESSION['logado']){
+			echo'<div class="col-md-5">
+				<a href="'.$home.'"><button class="btn btn-primary btn-block" style="color:white;" type="submit"><strong>Voltar para Home</strong></button></a>
+			</div>';
+		}
+
+		else
+		 echo'<div class="col-md-5">
+				<a href="'.$editar.'"><button class="btn btn-primary btn-block" style="color:white;" name="submitEvento" type="submit"><strong>Editar Horários</strong></button></a>
+			</div>';
+	}
+
+	function geraEdicao($numberWeek=false,$year=false){
+		$firstLine=true;
+
+		$dias = array('Segunda-Feira','Terça-Feira','Quarta-Feira',
+			'Quinta-Feira','Sexta-Feira','Sábado');
+
+			$horarios = array('Horários','7:00h às 8:00h','8:00h às 9:00h','9:00h às 10:00h',
+			'10:00h às 11:00h','11:00h às 12:00h','12:00h às 14:00h','14:00h às 15:00h',		
+			'15:00h às 16:00h','16:00h às 17:00h','17:00h às 18:00h','18:00h às 19:00h',
+			'19:00h às 20:00h','20:00h às 21:00h');
+
+		echo '
+		<form>
+		<table class="table table-striped text-center">';
+
+		if($numberWeek!=false and $year!=false)
+			$arrayHorarios=resolveHorario($numberWeek,$year);
+
+		for($j=0;$j<14;$j++){
+			echo "<tr>
+					<th>".$horarios[$j].
+			"</th>";
+				for($i=0;$i<6;$i++)
+				{
+							  echo '<td>';
+							  if($firstLine)
+							  	echo'	<span style="text-align:center;"><strong>'.$dias[$i].'</strong></span>';
+							   else{
+							   	if($j==6)
+							   		echo'<strong>Almoço</strong>';	
+							   	else
+							   		if($numberWeek!=false and $year!=false)
+							    		echo'	<input type="text" class="form-control typeahead tt" name="'.$i."-".$j.'" value="'.converteMateria($arrayHorarios[$i][$j-1],false).'">';
+							    	else
+							    		echo'	<input type="text" class="form-control typeahead tt" name="'.$i."-".$j.'">';
+								}
+
+							    echo'</td>';
+				}
+			echo'</td>';
+
+			$firstLine=false;
+		}
+	}
+
+	function voltaSemana(){
+			$editar=BASE_URL."editar/";
+
+			if(isset($_GET['wk_number']) and isset($_GET['year']))
+				$editar=$editar.$_GET['year']."/".($_GET['wk_number']-1);
+
+			return $editar;
+	}
+
+	function avancaSemana(){
+			$editar=BASE_URL."editar/";
+
+			if(isset($_GET['wk_number']) and isset($_GET['year']))
+				$editar=$editar.$_GET['year']."/".($_GET['wk_number']+1);
+
+			return $editar;
+	}
+
+
+
 ?>
