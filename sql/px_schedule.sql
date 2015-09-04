@@ -3,8 +3,8 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Aug 01, 2015 at 09:44 PM
--- Server version: 5.6.24-0ubuntu2.1
+-- Generation Time: Sep 03, 2015 at 10:22 PM
+-- Server version: 5.6.25-0ubuntu0.15.04.1
 -- PHP Version: 5.6.4-4ubuntu6.2
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
@@ -40,15 +40,19 @@ CREATE TABLE IF NOT EXISTS `px_disciplinas` (
 CREATE TABLE IF NOT EXISTS `px_schedules` (
 `ID` int(4) NOT NULL,
   `id_adm` int(11) NOT NULL,
-  `horarios` text NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
+  `horarios` text NOT NULL,
+  `wk_number` int(3) NOT NULL,
+  `year` int(4) NOT NULL
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `px_schedules`
 --
 
-INSERT INTO `px_schedules` (`ID`, `id_adm`, `horarios`) VALUES
-(1, 1, '-1,1,2,3,3,-2,1,1,1,1,2,3,3|1,1,2,3,3,-2,1,1,1,1,2,3,3|1,1,2,3,3,-2,1,1,1,1,2,3,3|1,1,2,3,3,-2,1,1,1,1,2,3,3|-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1|1,1,1,1,1,-1,-1,-1,-1,-1,-1,-1,-1');
+INSERT INTO `px_schedules` (`ID`, `id_adm`, `horarios`, `wk_number`, `year`) VALUES
+(1, 1, '-1,1,2,3,3,-2,1,1,1,1,2,3,3|1,1,2,3,3,-2,1,1,1,1,2,3,3|1,1,2,3,3,-2,1,1,1,1,2,3,3|1,1,2,3,3,-2,1,1,1,1,2,3,3|-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1|1,1,1,1,1,-1,-1,-1,-1,-1,-1,-1,-1', 35, 2015),
+(2, 1, '-1,-1,-1,3,3,-2,1,1,1,1,2,3,3|1,1,2,3,3,-2,1,1,1,1,2,3,3|1,1,2,3,3,-2,1,1,1,1,2,3,3|1,1,2,3,3,-2,1,1,1,1,2,3,3|-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1|1,1,1,1,1,-1,-1,-1,-1,-1,-1,-1,-1', 36, 2015),
+(3, 1, '-1,-1,-1,3,4,-2,1,1,1,1,2,3,3|1,1,2,3,3,-2,1,1,1,1,4,3,3|1,1,2,3,3,-2,1,1,1,1,5,3,3|1,1,2,3,3,-2,1,1,1,1,2,3,3|-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1|1,1,1,1,1,-1,-1,-1,-1,-1,-1,-1,-1', 37, 2015);
 
 -- --------------------------------------------------------
 
@@ -61,7 +65,7 @@ CREATE TABLE IF NOT EXISTS `px_user` (
   `email` text NOT NULL,
   `nome` text NOT NULL,
   `password` text NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `px_user`
@@ -105,12 +109,12 @@ MODIFY `ID` int(4) NOT NULL AUTO_INCREMENT;
 -- AUTO_INCREMENT for table `px_schedules`
 --
 ALTER TABLE `px_schedules`
-MODIFY `ID` int(4) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=3;
+MODIFY `ID` int(4) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=4;
 --
 -- AUTO_INCREMENT for table `px_user`
 --
 ALTER TABLE `px_user`
-MODIFY `ID` int(4) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=3;
+MODIFY `ID` int(4) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=2;
 --
 -- Constraints for dumped tables
 --

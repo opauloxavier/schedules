@@ -562,6 +562,13 @@ function printaTabela($dados){
 			if(isset($_GET['wk_number']) and isset($_GET['year']))
 				$editar=$editar.$_GET['year']."/".($_GET['wk_number']-1);
 
+			else{
+				$ano=date("Y");
+				$semana=date("W")-1;
+
+				$editar=$editar.$ano."/".$semana;
+			}
+
 			return $editar;
 	}
 
@@ -570,6 +577,14 @@ function printaTabela($dados){
 
 			if(isset($_GET['wk_number']) and isset($_GET['year']))
 				$editar=$editar.$_GET['year']."/".($_GET['wk_number']+1);
+
+
+			else{
+				$ano=date("Y");
+				$semana=date("W")+1;
+
+				$editar=$editar.$ano."/".$semana;
+			}
 
 			return $editar;
 	}
