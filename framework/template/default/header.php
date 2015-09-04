@@ -3,7 +3,7 @@
 <head> 
 	<title><?php echo SITE_TITLE." | ".SITE_SUBTITLE; ?></title>
 	<meta http-equiv="Content-Type" content="text/html;charset=utf-8">
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+	<script src="<?=ST_PATH?>js/jquery.min.js"></script>
 	<link rel="stylesheet" type="text/css" href="<?=ST_PATH?>css/bootstrap.css" />
 	<!--<link rel="stylesheet" type="text/css" href="<?=ST_PATH?>css/bootstrap-datepicker.css" />
 		<script type="text/javascript" src="<?=ST_PATH?>js/bootstrap-datepicker.js"></script>

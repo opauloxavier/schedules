@@ -1,36 +1,50 @@
 <?php 
-	$wk_number=date('W');
+	
+	$action_url=BASE_URL;
 
-	if(isset($_GET['wk_number']) and isset($_GET['year'])){
-		$wk_number=$_GET['wk_number']; //
-		$ano_atual=$_GET['year'];
+	if($_SESSION['logado']){
 
-		if($wk_number<10)
-			$wk_number="0".$wk_number;
-
-
-		$stringData=$ano_atual."W".$wk_number; // Formato 2015W35
-
-		$inicioSemana= date('d-m-Y',strtotime($stringData));
-
-		$finalSemana= date('d-m-Y',strtotime("+6 day", strtotime($inicioSemana)));
-
-		$data_editando='Correspondente a <strong>'.$inicioSemana.'</strong> a <strong>'.$finalSemana.'</strong>';
-
-	}
-
-	else{
-		$numeroSemana= date('W');
+		$wk_number=date('W');
 		$ano=date('Y');
 
-		$stringData=$ano."W".$numeroSemana; // Formato 2015W35
+		if(isset($_GET['wk_number']) and isset($_GET['year'])){
+			$wk_number=$_GET['wk_number']; //
+			$ano_atual=$_GET['year'];
 
-		$inicioSemana= date('d-m-Y',strtotime($stringData));
+			if($wk_number<10)
+				$wk_number="0".$wk_number;
 
-		$finalSemana= date('d-m-Y',strtotime("+6 day", strtotime($inicioSemana)));
 
-		$data_editando='Correspondente a <strong>'.$inicioSemana.'</strong> a <strong>'.$finalSemana.'</strong>';
+			$stringData=$ano_atual."W".$wk_number; // Formato 2015W35
+
+			$inicioSemana= date('d-m-Y',strtotime($stringData));
+
+			$finalSemana= date('d-m-Y',strtotime("+6 day", strtotime($inicioSemana)));
+
+			$data_editando='Correspondente a <strong>'.$inicioSemana.'</strong> a <strong>'.$finalSemana.'</strong>';
+
+			$action_url=$action_url."finalizaEdicao/".$ano_atual."/".$wk_number; 
+		}
+
+		else{
+			$numeroSemana= date('W');
+			$ano=date('Y');
+
+			$stringData=$ano."W".$numeroSemana; // Formato 2015W35
+
+			$inicioSemana= date('d-m-Y',strtotime($stringData));
+
+			$finalSemana= date('d-m-Y',strtotime("+6 day", strtotime($inicioSemana)));
+
+			$data_editando='Correspondente a <strong>'.$inicioSemana.'</strong> a <strong>'.$finalSemana.'</strong>';
+			
+			$action_url=$action_url."finalizaEdicao/".$ano."/".$numeroSemana."/";
+
+		}
 	}
+
+	else
+		header("location:home/");
 ?>
 
 <div class="col-md-12">
@@ -47,9 +61,11 @@
 	</div>
 
 	<div class="col-md-12">
+		<form method="POST" action="<?php echo $action_url;?>">
 		<div class='col-md-3 pull-right' style="margin-bottom:20px;">
 			<input type="submit" class="btn btn-md btn-success pull-right" value="Salvar Alterações" name="enviaAlteracoes"></input>
 		</div>
+
 		<div class="form-group">
 			<div class="col-md-12">
 				<?php 
@@ -58,8 +74,6 @@
 
 					else
 						geraEdicao(date('W'),date('Y'));
-					
-					
 				?>
 			</div>
 		</div>

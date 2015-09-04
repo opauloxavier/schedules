@@ -464,6 +464,28 @@ function printaTabela($dados){
 			}
 	}
 
+	function converteToMateria($numero){
+			
+			switch($numero){
+				case "Almoço":
+					return -2;
+				case "Sem aula":
+					return -1;
+				case "Não Definido":
+					return 0;
+				case "Legislação":
+					return 1;
+				case "Direçao Defensiva":
+					return 2;
+				case "Primeiros Socorros":
+					return 3;
+				case "Meio Ambiente":
+					return 4;
+				case "Mecânica":
+					return 5;
+				}
+	}
+
 	function resolveHorario($numberWeek=false,$year=false){
 
 		$mysqli = connect_db();
@@ -523,7 +545,6 @@ function printaTabela($dados){
 			'19:00h às 20:00h','20:00h às 21:00h');
 
 		echo '
-		<form>
 		<table class="table table-striped text-center">';
 
 		if($numberWeek!=false and $year!=false)
@@ -543,9 +564,9 @@ function printaTabela($dados){
 							   		echo'<strong>Almoço</strong>';	
 							   	else
 							   		if($numberWeek!=false and $year!=false)
-							    		echo'	<input type="text" class="form-control typeahead tt" name="'.$i."-".$j.'" value="'.converteMateria($arrayHorarios[$i][$j-1],false).'">';
+							    		echo'	<input type="text" class="form-control" name="'.$i."-".$j.'" value="'.converteMateria($arrayHorarios[$i][$j-1],false).'">';
 							    	else
-							    		echo'	<input type="text" class="form-control typeahead tt" name="'.$i."-".$j.'">';
+							    		echo'	<input type="text" class="form-control" name="'.$i."-".$j.'">';
 								}
 
 							    echo'</td>';

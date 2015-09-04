@@ -39,6 +39,10 @@
 				include_once PAGES_URL."editar.php";
 			}
 
+			elseif($_GET['to']=='finalizaEdicao'){
+				include_once PAGES_URL."finaliza.php";
+			}
+
 		}
 		
 		else{
