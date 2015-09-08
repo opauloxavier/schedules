@@ -14,9 +14,6 @@
 		entrarSistema($_POST['emailLogin'],$_POST['passwordLogin']);
 	}
 	
-
-
-	
 	require_once 'vendor/autoload.php';
 
 	if($_GET['to']!='data' and $_GET['to']!='tabela'){
@@ -42,7 +39,6 @@
 			elseif($_GET['to']=='finalizaEdicao'){
 				include_once PAGES_URL."finaliza.php";
 			}
-
 		}
 		
 		else{

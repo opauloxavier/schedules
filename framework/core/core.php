@@ -30,7 +30,7 @@
 
 
 	else{
-		define("url","http://www.pauloxavier.com/certified/");
+		define("url","http://www.cfccasal20.com/horarios/");
 		define("db_table", "px_user");
 		define("db_user","mysql");
 		define("db_name","u538617697_cert");

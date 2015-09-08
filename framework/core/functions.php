@@ -86,11 +86,11 @@ function connect_db(){
 
 	}
 
-	function check_double_participante($nome_participante,$id_evento) {
+	function check_Horario($year,$week) {
 
 		$mysqli = connect_db();
 
-		$result = mysqli_query($mysqli,"SELECT * FROM px_participantes WHERE ID_evento = '$id_evento' and nome_participante = '$nome_participante'");
+		$result = mysqli_query($mysqli,"SELECT * FROM px_schedules WHERE wk_number = '".$week."' and year = '".$year."' ");
 
 		$num = mysqli_num_rows($result);
 
@@ -108,15 +108,20 @@ function connect_db(){
 
 
 
-		function check_Referral_True($id) {
+	function atualizaHorario($ano,$semana,$string) {
 
 		$mysqli = connect_db();
 
-		$result = mysqli_query($mysqli,"SELECT * FROM `px_referral` WHERE RefereeID = '$id' AND Status = '1' ");
 
-		$num = mysqli_num_rows($result);
+		if(check_Horario($ano,$semana))
+			$result = mysqli_query($mysqli,"UPDATE px_schedules SET horarios = '".$string."' WHERE wk_number='".$semana."' AND year='".$ano."'");
 
-		return $num;
+		else
+			$result = mysqli_query($mysqli,"INSERT INTO px_schedules (ID, id_adm, horarios,wk_number, year) VALUES (NULL, '".$_SESSION['ID']."', '".$string."', '".$semana."', '".$ano."')"); 
+		
+		//$num = mysqli_num_rows($result);
+
+		//return $num;
 
 	}
 
