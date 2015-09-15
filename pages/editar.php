@@ -46,10 +46,10 @@
 	else
 		header("location:home/");
 ?>
-
+<div class="container-fluid">
 <div class="col-md-12">
-	<div class="form-group text-center" style="margin-top:70px;">
-		<legend><h3>Editando:  <strong>Semana <?=$wk_number?></strong></legend></h3>
+	<div class="form-group text-center" style="margin-top:60px;">
+		<legend><h3>Editando:  <strong>Semana <?=$wk_number?></strong> / <strong> <?=$ano?></strong></legend></h3>
 			<h5><a href="<?php echo voltaSemana();?>"><button type="button" class="btn btn-default btn-xs" aria-label="Left Align">
 		 				 <span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span>
 					</button></a>   <?=$data_editando?>   
@@ -80,4 +80,5 @@
 
 		</form>
 	</div>
+</div>
 </div>

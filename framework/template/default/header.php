@@ -16,7 +16,7 @@
 </head>
 <body>
 	<nav class="navbar navbar-default navbar-fixed-top">
-      <div class="container">
+      <div class="container-fluid">
       	<div class="col-md-12">
         <div class="col-md-offset-2 col-md-8 pull-right headerCode">
         	<?php headerLogin($_SESSION['logado']);?>

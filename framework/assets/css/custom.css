@@ -1,12 +1,18 @@
-.footer {
-  padding-top:10px;
-  height: 80px;
-  background-color: #f5f5f5;
+html {
+  position: relative;
+  min-height: 100%;
 }
 
+.footer {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  /* Set the fixed height of the footer here */
+  height: 60px;
+}
 
-body{
-	color:black;
+legend{
+	margin-bottom:-15px;
 }
 
 .navbar{
@@ -22,6 +28,7 @@ th{
 }
 
 .almoco{
+	color:#000000;
 	font-weight: 600;
 }
 
@@ -40,9 +47,8 @@ th{
 	font-weight: 600;
 }
 
-
 .direcaoDefensiva{
-	color:#F2EF38;
+	color:#d7d828;
 	font-weight: 600;
 }
 
@@ -52,11 +58,20 @@ th{
 }
 
 .mecanica{
-	color:#E0D0BF;
+	color:#28c2d8;
 	font-weight: 600;
 }
 
 .meioAmbiente{
 	color:#187813;
+	font-weight: 600;
+}
+
+.padding{
+	padding:1px 10px 0 0;
+}
+
+.feriado{
+	color:#ac06c1;
 	font-weight: 600;
 }

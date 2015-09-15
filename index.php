@@ -1,5 +1,7 @@
 <?php if( !isset($_SESSION) ){ session_start(); }
 
+	error_reporting(0);
+	
 	require_once('framework/core/functions.php');
 
 	if(isset($_SESSION["nome"])){
@@ -44,6 +46,8 @@
 		else{
 			include_once PAGES_URL."home.php";
 		}
+
+		include_once THEME_URL."footer.php";
 	}
 
 	else if($_GET['to']=='tabela'){

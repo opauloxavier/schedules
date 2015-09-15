@@ -118,10 +118,6 @@ function connect_db(){
 
 		else
 			$result = mysqli_query($mysqli,"INSERT INTO px_schedules (ID, id_adm, horarios,wk_number, year) VALUES (NULL, '".$_SESSION['ID']."', '".$string."', '".$semana."', '".$ano."')"); 
-		
-		//$num = mysqli_num_rows($result);
-
-		//return $num;
 
 	}
 
@@ -141,11 +137,11 @@ function connect_db(){
 		}
 
 		else{
-			setCodeAlerta(2);
+			header('Location: home');
 			return false;
 		}
 
-		//header('Location: home');
+		
 	}
 
 	function criaCadastro($nomeCadastro,$emailCadastro,$passwordCadastro,$refereeID=0){
@@ -196,12 +192,12 @@ function connect_db(){
 		else{
 
 			if(check_double($email)==1){
-				echo "entrei aqui";
-				setCodeAlerta(1);
+				//echo "entrei aqui";
+				//setCodeAlerta(1);
 			}
 
 			else {
-				setCodeAlerta(2);
+				header('Location: home');
 			}
 		}
 
@@ -286,76 +282,7 @@ function areaCadastro($logado){
 	}
 
 
-	function geraPdf($content,$autor,$tituloCertificado,$subject,$keywords,$nome_evento,$nome_participante,$local_evento,$data_evento,$uuid_participante){
-		// create new PDF document
-		$html = $content;
-		//$html = "<h1>mensagem de teste</h1>";
-
-		$html = str_replace('%name%',$nome_participante, $html);
-		$html = str_replace('%local%', $local_evento, $html);
-		$html = str_replace('%evento%', $nome_evento, $html);
-		$html = str_replace('%data%',$data_evento, $html);
-
-		$pdf = new TCPDF("L", PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
-		// set document information
-		$pdf->SetCreator("Certified - Certificados Automatizados");
-		$pdf->SetAuthor($autor);
-		$pdf->SetTitle($tituloCertificado);
-		$pdf->SetSubject($subject);
-		$pdf->SetKeywords($keywords);
-		$pdf->SetPrintFooter(false);
-		// set default header data
-		//$pdf->SetHeaderData(PDF_HEADER_LOGO, PDF_HEADER_LOGO_WIDTH, "Certificado Teste", "por Paulo", array(0,64,255), array(0,64,128));
-		$pdf->setFooterData(array(0,64,0), array(0,64,128));
-		// set header and footer fonts
-		$pdf->setHeaderFont(Array(PDF_FONT_NAME_MAIN, '', PDF_FONT_SIZE_MAIN));
-		$pdf->setFooterFont(Array(PDF_FONT_NAME_DATA, '', PDF_FONT_SIZE_DATA));
-		// set default monospaced font
-		$pdf->SetDefaultMonospacedFont(PDF_FONT_MONOSPACED);
-		// set margins
-		$pdf->SetMargins(PDF_MARGIN_LEFT, PDF_MARGIN_TOP, PDF_MARGIN_RIGHT);
-		$pdf->SetHeaderMargin(PDF_MARGIN_HEADER);
-		$pdf->SetFooterMargin(PDF_MARGIN_FOOTER);
-		// set auto page breaks
-		$pdf->SetAutoPageBreak(TRUE, PDF_MARGIN_BOTTOM);
-		// set image scale factor
-		$pdf->setImageScale(PDF_IMAGE_SCALE_RATIO);
-		// set some language-dependent strings (optional)
-		if (@file_exists(dirname(__FILE__).'/lang/bra.php')) {
-			require_once(dirname(__FILE__).'/lang/bra.php');
-			$pdf->setLanguageArray($l);
-		}
-
-		$pdf->setFontSubsetting(true);
-
-		$pdf->SetFont('helvetica', '', 14, '', true);
-		// Add a page
-		// This method has several options, check the source code documentation for more information.
-		$pdf->AddPage();
-		// set text shadow effect
-		$pdf->setTextShadow(array('enabled'=>true, 'depth_w'=>0.2, 'depth_h'=>0.2, 'color'=>array(196,196,196), 'opacity'=>1, 'blend_mode'=>'Normal'));
-
-		$pdf->writeHTML($html, true, false, true, false, '');
-
-		ob_end_clean();
-
-		$pdf->Output($uuid_participante.'.pdf', 'D');
-	}
-
-	function importCSV($file_path){
 	
-		$file = fopen($file_path,"r");
-		if($file!=NULL)
-			  while (($result = fgetcsv($file)) !== false)
-				{
-				    $data[] = $result;
-				}
-
-		fclose($file);
-		
-		return $data;
-	}
-
 	function uuidGen($echo=false) {
 			if($echo)
 				echo md5(uniqid(rand(), true));
@@ -407,7 +334,7 @@ function printaTabela($dados){
 			'19:00h às 20:00h','20:00h às 21:00h');
 
 		$materias = $dados;
-		echo '<table class="table table-striped text-center"><tr><th>Horário</th>
+		echo '<table class="table table-striped text-center" style="margin-bottom:120px;"><tr><th>Horário</th>
 		<th>Segunda-Feira</th><th>Terça-Feira</th><th>Quarta-Feira</th>
 		<th>Quinta-Feira</th><th>Sexta-Feira</th><th>Sábado</th></tr>';
 
@@ -430,6 +357,8 @@ function printaTabela($dados){
 
 		if($tabelaView)
 			switch($numero){
+				case -3:
+					return "<span class='feriado'>Feriado</span>";
 				case -2:
 					return "<span class='almoco'>Almoço</span>";
 				case-1:
@@ -450,6 +379,8 @@ function printaTabela($dados){
 
 		else
 			switch($numero){
+				case -3:
+					return "Feriado";
 				case -2:
 					return "Almoço";
 				case-1:
@@ -472,21 +403,23 @@ function printaTabela($dados){
 	function converteToMateria($numero){
 			
 			switch($numero){
-				case "Almoço":
+				case "feriado":
+					return -3;
+				case "almoco":
 					return -2;
-				case "Sem aula":
+				case "semAula":
 					return -1;
-				case "Não Definido":
+				case "naoDefinido":
 					return 0;
-				case "Legislação":
+				case "legislacao":
 					return 1;
-				case "Direçao Defensiva":
+				case "direcaoDefensiva":
 					return 2;
-				case "Primeiros Socorros":
+				case "primeirosSocorros":
 					return 3;
-				case "Meio Ambiente":
+				case "meioAmbiente":
 					return 4;
-				case "Mecânica":
+				case "mecanica":
 					return 5;
 				}
 	}
@@ -508,12 +441,12 @@ function printaTabela($dados){
 
 		list($segunda,$terca,$quarta,$quinta,$sexta,$sabado) = split('\|',$horario[0]);
 
-		$temp1 = split(',',$segunda);
-		$temp2 = split(',',$terca);
-		$temp3 = split(',',$quarta);
-		$temp4 = split(',',$quinta);
-		$temp5 = split(',',$sexta);
-		$temp6 = split(',',$sabado);
+		$temp1 = explode(',',$segunda);
+		$temp2 = explode(',',$terca);
+		$temp3 = explode(',',$quarta);
+		$temp4 = explode(',',$quinta);
+		$temp5 = explode(',',$sexta);
+		$temp6 = explode(',',$sabado);
 
 		$diasSemana=array();
 
@@ -550,7 +483,7 @@ function printaTabela($dados){
 			'19:00h às 20:00h','20:00h às 21:00h');
 
 		echo '
-		<table class="table table-striped text-center">';
+		<table class="table table-striped text-center" style="margin-bottom:70px;">';
 
 		if($numberWeek!=false and $year!=false)
 			$arrayHorarios=resolveHorario($numberWeek,$year);
@@ -569,7 +502,8 @@ function printaTabela($dados){
 							   		echo'<strong>Almoço</strong>';	
 							   	else
 							   		if($numberWeek!=false and $year!=false)
-							    		echo'	<input type="text" class="form-control" name="'.$i."-".$j.'" value="'.converteMateria($arrayHorarios[$i][$j-1],false).'">';
+							   			geraSelect($arrayHorarios[$i][$j-1],$i,$j);
+							    		//echo'	<input type="text" class="form-control" name="'.$i."-".$j.'" value="'.converteMateria($arrayHorarios[$i][$j-1],false).'">';
 							    	else
 							    		echo'	<input type="text" class="form-control" name="'.$i."-".$j.'">';
 								}
@@ -615,6 +549,141 @@ function printaTabela($dados){
 			return $editar;
 	}
 
+	function geraSelect($arrayHorarios,$i,$j){
+
+		switch($arrayHorarios){
+				case -3:
+					echo '<select class="form-control text-center padding feriado" name="'.$i."-".$j.'" >
+														<option value="feriado" selected="selected" class="feriado">Feriado</option>
+														<option value="almoco" class="almoco">Almoço</option>
+														<option value="semAula" class="semAula">Sem Aula</option>
+														<option value="naoDefinido" class="naoDefinido">Não Definido</option>	
+													    <option value="legislacao" class="legislacao">Legislacão</option>
+													    <option value="meioAmbiente" class="meioAmbiente">Meio Ambiente</option>
+													    <option value="mecanica" class="mecanica">Mecânica</option>
+													    <option value="primeirosSocorros" class="primeirosSocorros">Primeiros Socorros</option>
+													    <option value="direcaoDefensiva" class="direcaoDefensiva">Direção Defensiva</option>
+												</select>';
+					break;
+				case -2:
+					echo '<select class="form-control text-center padding almoco" name="'.$i."-".$j.'" >
+														<option value="feriado" class="feriado">Feriado</option>
+														<option value="almoco" selected="selected" class="almoco">Almoço</option>
+														<option value="semAula" class="semAula">Sem Aula</option>
+														<option value="naoDefinido" class="naoDefinido">Não Definido</option>	
+													    <option value="legislacao" class="legislacao">Legislacão</option>
+													    <option value="meioAmbiente" class="meioAmbiente">Meio Ambiente</option>
+													    <option value="mecanica" class="mecanica">Mecânica</option>
+													    <option value="primeirosSocorros" class="primeirosSocorros">Primeiros Socorros</option>
+													    <option value="direcaoDefensiva" class="direcaoDefensiva">Direção Defensiva</option>
+												</select>';
+
+					break;
+
+				case -1:
+					echo '<select class="form-control text-center padding semAula" name="'.$i."-".$j.'" >
+														<option value="feriado" class="feriado">Feriado</option>
+														<option value="almoco" class="almoco">Almoço</option>
+														<option value="semAula" selected="selected" class="semAula">Sem Aula</option>
+														<option value="naoDefinido" class="naoDefinido">Não Definido</option>	
+													    <option value="legislacao" class="legislacao">Legislacão</option>
+													    <option value="meioAmbiente" class="meioAmbiente">Meio Ambiente</option>
+													    <option value="mecanica" class="mecanica">Mecânica</option>
+													    <option value="primeirosSocorros" class="primeirosSocorros">Primeiros Socorros</option>
+													    <option value="direcaoDefensiva" class="direcaoDefensiva">Direção Defensiva</option>
+												</select>';				
+					break;
+
+				case 0:
+					echo '<select class="form-control text-center padding naoDefinido" name="'.$i."-".$j.'" >
+														<option value="feriado" class="feriado">Feriado</option>
+														<option value="almoco" class="almoco">Almoço</option>
+														<option value="semAula" class="semAula">Sem Aula</option>
+														<option value="naoDefinido" selected="selected" class="naoDefinido">Não Definido</option>	
+													    <option value="legislacao" class="legislacao">Legislacão</option>
+													    <option value="meioAmbiente" class="meioAmbiente">Meio Ambiente</option>
+													    <option value="mecanica" class="mecanica">Mecânica</option>
+													    <option value="primeirosSocorros" class="primeirosSocorros">Primeiros Socorros</option>
+													    <option value="direcaoDefensiva" class="direcaoDefensiva">Direção Defensiva</option>
+												</select>';	
+					break;
+
+				case 1:
+					echo '<select class="form-control text-center padding legislacao" name="'.$i."-".$j.'" >
+														<option value="feriado" class="feriado">Feriado</option>
+														<option value="almoco" class="almoco">Almoço</option>
+														<option value="semAula" class="semAula">Sem Aula</option>
+														<option value="naoDefinido" class="naoDefinido">Não Definido</option>	
+													    <option value="legislacao" selected="selected" class="legislacao">Legislacão</option>
+													    <option value="meioAmbiente" class="meioAmbiente">Meio Ambiente</option>
+													    <option value="mecanica" class="mecanica">Mecânica</option>
+													    <option value="primeirosSocorros" class="primeirosSocorros">Primeiros Socorros</option>
+													    <option value="direcaoDefensiva" class="direcaoDefensiva">Direção Defensiva</option>
+												</select>';
+					break;				
+				
+				return;
+				case 2:
+					echo '<select class="form-control text-center padding direcaoDefensiva" name="'.$i."-".$j.'" >
+														<option value="feriado" class="feriado">Feriado</option>
+														<option value="almoco" class="almoco">Almoço</option>
+														<option value="semAula" class="semAula">Sem Aula</option>
+														<option value="naoDefinido" class="naoDefinido">Não Definido</option>	
+													    <option value="legislacao" class="legislacao">Legislacão</option>
+													    <option value="meioAmbiente" class="meioAmbiente">Meio Ambiente</option>
+													    <option value="mecanica" class="mecanica">Mecânica</option>
+													    <option value="primeirosSocorros" class="primeirosSocorros">Primeiros Socorros</option>
+													    <option value="direcaoDefensiva" selected="selected" class="direcaoDefensiva">Direção Defensiva</option>
+												</select>';				
+				
+					break;
+
+				case 3:
+					echo '<select class="form-control text-center padding primeirosSocorros" name="'.$i."-".$j.'" >
+												<option value="feriado" class="feriado">Feriado</option>
+														<option value="almoco" class="almoco">Almoço</option>
+														<option value="semAula" class="semAula">Sem Aula</option>
+														<option value="naoDefinido" class="naoDefinido">Não Definido</option>	
+													    <option value="legislacao" class="legislacao">Legislacão</option>
+													    <option value="meioAmbiente" class="meioAmbiente">Meio Ambiente</option>
+													    <option value="mecanica" class="mecanica">Mecânica</option>
+													    <option value="primeirosSocorros" selected="selected" class="primeirosSocorros">Primeiros Socorros</option>
+													    <option value="direcaoDefensiva" class="direcaoDefensiva">Direção Defensiva</option>
+												</select>';				
+					break;
+
+				case 4:
+					echo '<select class="form-control text-center padding meioAmbiente" name="'.$i."-".$j.'" >
+														<option value="feriado" class="feriado">Feriado</option>
+														<option value="almoco" class="almoco">Almoço</option>
+														<option value="semAula" class="semAula">Sem Aula</option>
+														<option value="naoDefinido" class="naoDefinido">Não Definido</option>	
+													    <option value="legislacao" class="legislacao">Legislacão</option>
+													    <option value="meioAmbiente" selected="selected" class="meioAmbiente">Meio Ambiente</option>
+													    <option value="mecanica" class="mecanica">Mecânica</option>
+													    <option value="primeirosSocorros" class="primeirosSocorros">Primeiros Socorros</option>
+													    <option value="direcaoDefensiva" class="direcaoDefensiva">Direção Defensiva</option>
+												</select>';
+				
+					break;
+
+				case 5:
+					echo '<select class="form-control text-center padding mecanica" name="'.$i."-".$j.'" >
+														<option value="feriado" class="feriado">Feriado</option>
+														<option value="almoco" class="almoco">Almoço</option>
+														<option value="semAula" class="semAula">Sem Aula</option>
+														<option value="naoDefinido" class="naoDefinido">Não Definido</option>	
+													    <option value="legislacao" class="legislacao">Legislacão</option>
+													    <option value="meioAmbiente" class="meioAmbiente">Meio Ambiente</option>
+													    <option value="mecanica" selected="selected" class="mecanica">Mecânica</option>
+													    <option value="primeirosSocorros" class="primeirosSocorros">Primeiros Socorros</option>
+													    <option value="direcaoDefensiva" class="direcaoDefensiva">Direção Defensiva</option>
+												</select>';
+
+				
+					break;
+		}
+	}
 
 
 ?>

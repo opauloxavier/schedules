@@ -1,3 +1,4 @@
+-3 Feriado
 -2 Almoço
 -1 Sem aula
 0 Não Definido

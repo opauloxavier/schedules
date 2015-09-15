@@ -2,13 +2,12 @@
 	date_default_timezone_set('Brazil/East');
 	define('CONF_PATH','config/');
 	define('PAGES_URL','pages/');
-
 	define('SITE_TITLE','Horarios Autoescola Casal 20');
 	define('SITE_SUBTITLE','');
 	define('SITE_URL','http://www.cfccasal20.com.br/horarios');
 	define('THEME_URL','framework/template/default/');
 	define('SOCIAL_FB','https://www.facebook.com/cfccasal20');
-	define('PROJECT_ALIAS','schedules');
+
 
 	//mail data
 	define('MAIL_USERNAME','contato.pauloxavier@gmail.com');
@@ -18,6 +17,7 @@
 
 
 	if($_SERVER['SERVER_NAME'] == 'dev.pauloxavier.com'){
+		define('PROJECT_ALIAS','schedules');
 		define("url",$_SERVER['SERVER_NAME']."/".PROJECT_ALIAS."/");
 		define("db_table", "px_user");
 		define("db_user","localhost");
@@ -30,13 +30,14 @@
 
 
 	else{
-		define("url","http://www.cfccasal20.com/horarios/");
-		define("db_table", "px_user");
+		define('PROJECT_ALIAS','horarios');
+		define("url",$_SERVER['SERVER_NAME']."/".PROJECT_ALIAS."/");
+		define("db_table", "px_schedules");
 		define("db_user","mysql");
-		define("db_name","u538617697_cert");
-		define("db_login","u538617697_admin");
-		define("db_password","over5574");
-		define('BASE_URL','http://www.pauloxavier.com/certified/');
-		define('ST_PATH','http://'.$_SERVER['HTTP_HOST'].'/certified/framework/assets/');
+		define("db_name","u364595886_sched");
+		define("db_login","u364595886_admin");
+		define("db_password","over55741234");
+		define('BASE_URL','http://www.cfccasal20.com.br/'.PROJECT_ALIAS.'/');
+		define('ST_PATH','http://'.$_SERVER['HTTP_HOST'].'/'.PROJECT_ALIAS.'/framework/assets/');
 	}
 ?>
