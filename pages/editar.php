@@ -49,7 +49,7 @@
 <div class="container-fluid">
 <div class="col-md-12">
 	<div class="form-group text-center" style="margin-top:60px;">
-		<legend><h3>Editando:  <strong>Semana <?=$wk_number?></strong> / <strong> <?=$ano?></strong></legend></h3>
+		<legend><h3>Editando:  <strong>Semana <?=$wk_number?></strong> / <strong> <?=$ano?></strong></h3>
 			<h5><a href="<?php echo voltaSemana();?>"><button type="button" class="btn btn-default btn-xs" aria-label="Left Align">
 		 				 <span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span>
 					</button></a>   <?=$data_editando?>   
@@ -75,10 +75,10 @@
 					else
 						geraEdicao(date('W'),date('Y'));
 				?>
+				</table>
 			</div>
 		</div>
 
 		</form>
 	</div>
-</div>
-</div>
+

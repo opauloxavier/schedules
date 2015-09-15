@@ -14,5 +14,6 @@
 <div class="row">
 	<div class="col-md-12 tabela-horario">
 	<?php printaTabela(resolveHorario());?>
+	</table>
 	</div>
 </div>

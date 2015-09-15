@@ -510,7 +510,7 @@ function printaTabela($dados){
 
 							    echo'</td>';
 				}
-			echo'</td>';
+			echo'</tr>';
 
 			$firstLine=false;
 		}

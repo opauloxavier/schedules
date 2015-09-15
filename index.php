@@ -17,6 +17,7 @@
 	}
 	
 	require_once 'vendor/autoload.php';
+	//require_once 'framework/sdk/analyticstracking.php';
 
 	if($_GET['to']!='data' and $_GET['to']!='tabela'){
 		include_once THEME_URL."header.php";
@@ -41,6 +42,10 @@
 			elseif($_GET['to']=='finalizaEdicao'){
 				include_once PAGES_URL."finaliza.php";
 			}
+
+			elseif($_GET['to']=='teste'){
+				include_once PAGES_URL."teste.php";
+			}
 		}
 		
 		else{
@@ -57,7 +62,6 @@
 	else if($_GET['to']=='data'){
 				include_once PAGES_URL."data.php";
 	}
-
 	
 
 ?>
